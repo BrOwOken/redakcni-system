@@ -1,0 +1,44 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="main">
+        <div class="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
+            <a class="navbar-brand" href="#">Redakční systém</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarText">
+                <div class="navbar-nav">
+                    <AuthorizeView>
+                        <Authorized>
+                            <div class="nav-item">
+                                <NavLink class="nav-link" href="#">Articles</NavLink>
+                            </div>
+                            <div class="nav-item">
+                                <NavLink class="nav-link" href="addarticle">Add article</NavLink>
+                            </div>
+                            <div class="nav-item">
+                                <NavLink class="nav-link" href="Identity/Account/Manage">User</NavLink>
+                            </div>
+                            <form method="post" class="nav-item" action="Identity/Account/LogOut">
+                                <button type="submit" class="btn btn-light" style="margin-left: 8px;">Log out</button>
+                            </form>
+                        </Authorized>
+                        <NotAuthorized>
+                            <div class="nav-item">
+                                <NavLink class="btn btn-outline-light" href="Identity/Account/Register">Register</NavLink>
+                            </div>
+                            <div class="nav-item" style="margin-left: 16px;">
+                                <NavLink class="btn btn-light" href="Identity/Account/Login">Login</NavLink>
+                            </div>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </div>
+            </div>
+            
+        </div>
+        <div class="content px-4">
+            @Body
+        </div>
+    </div>
+</div>

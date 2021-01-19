@@ -1,0 +1,52 @@
+﻿@page "/edit/{id:int}"
+@using RedakcniSystem.Data;
+@inject ArticleService articleService
+@inject NavigationManager nav
+
+<AuthorizeView>
+    <Authorized>
+        <h3>Edit article</h3>
+
+        <div style="max-width: 690px">
+            <div class="form-group">
+                <label for="">Title</label>
+                <input name="titleInput" @bind="article.Title" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Author</label>
+                <input name="authorInput" @bind="article.Author" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Content</label>
+                <textarea name="contentInput" @bind="article.Content" class="form-control" rows="6"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Image url</label>
+                <input name="imageUrlInput" @bind="article.ImageUrl" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Tags (divide them by comma)</label>
+                <input name="tagsInput" @bind="article.Tags" class="form-control" />
+            </div>
+            <button class="btn btn-primary" @onclick="(e) => { SaveArticle(); }" data-toggle="modal" data-target="#exampleModal">Save</button>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <h3>Please <a href="Identity/Account/Login">login</a> to edit articles.</h3>
+    </NotAuthorized>
+</AuthorizeView>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private Article article;
+
+    protected override void OnInitialized()
+    {
+        article = articleService.GetArticle(Id);
+    }
+    public void SaveArticle()
+    {
+        articleService.EditArticle(article);
+        nav.NavigateTo($"/article/{Id}");
+    }
+}

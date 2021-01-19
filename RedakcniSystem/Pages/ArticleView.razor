@@ -1,0 +1,35 @@
+﻿@page "/article/{id:int}"
+@using RedakcniSystem.Data;
+@inject ArticleService articleService
+
+<figure class="figure">
+    <img src="@article.ImageUrl" class="figure-img img-fluid rounded">
+    <figcaption class="figure-caption">@article.Author</figcaption>
+</figure>
+
+
+<div style="width: 100%;">
+
+    @foreach (var tag in article.Tags.Split(','))
+    {
+        <span class="badge badge-primary" style="margin-right: 4px;">@tag</span>
+    }
+</div>
+
+<h3 class="mt-3">@article.Title</h3>
+
+<p class="mt-3">@article.Content</p>
+
+
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public Article article;
+
+    protected override void OnInitialized()
+    {
+        article = articleService.GetArticle(Id);
+    }
+}
