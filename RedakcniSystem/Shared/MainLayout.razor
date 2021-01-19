@@ -15,11 +15,9 @@
                                 <NavLink class="nav-link" href="#">Articles</NavLink>
                             </div>
                             <div class="nav-item">
-                                <NavLink class="nav-link" href="addarticle">Add article</NavLink>
-                            </div>
-                            <div class="nav-item">
                                 <NavLink class="nav-link" href="Identity/Account/Manage">User</NavLink>
                             </div>
+
                             <form method="post" class="nav-item" action="Identity/Account/LogOut">
                                 <button type="submit" class="btn btn-light" style="margin-left: 8px;">Log out</button>
                             </form>
@@ -33,6 +31,21 @@
                             </div>
                         </NotAuthorized>
                     </AuthorizeView>
+                    <AuthorizeView Roles="admin, redactor">
+                        <Authorized>
+                            <div class="nav-item">
+                                <NavLink class="nav-link" href="addarticle">Add article</NavLink>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="admin">
+                        <Authorized>
+                            <div class="nav-item">
+                                <NavLink class="nav-link" href="usermanager">User manager</NavLink>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+                    
                 </div>
             </div>
             

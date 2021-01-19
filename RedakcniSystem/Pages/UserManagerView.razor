@@ -1,0 +1,49 @@
+﻿@using RedakcniSystem.Data
+@inject UsersService usersService
+@page "/usermanager"
+
+<AuthorizeView Roles="admin">
+    <Authorized>
+        <h3>User manager</h3>
+
+        <div style="max-width: 420px;">
+            <div class="form-group">
+                <label>Select role</label>
+                <select @bind="selectedOption" class="form-control">
+                    <option value="redactor">Redactor</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            
+
+            <div class="form-group">
+                <label>Email</label>
+                <input class="form-control" @bind="email"/>
+            </div>
+
+            <button class="btn btn-primary" @onclick="(e) => { AddNewRole(); }">Add</button>
+        </div>
+    </Authorized>
+   <NotAuthorized>
+       <h3>Only admin can acess this page</h3>
+   </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+    string email;
+    string selectedOption;
+
+    private void AddNewRole()
+    {
+        if (selectedOption == "admin")
+        {
+            usersService.AddAdmin(email);
+        }
+        else if (selectedOption == "redactor")
+        {
+            usersService.AddRedactor(email);
+        }
+
+    }
+}

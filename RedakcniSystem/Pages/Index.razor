@@ -2,6 +2,7 @@
 @page "/"
 @inject ArticleService articleService
 @inject NavigationManager nav
+@inject UsersService us 
 
 <h2 class="mb-4">Articles</h2>
 <div class="card-columns">
@@ -13,14 +14,16 @@
                 <h5 class="card-title">@article.Title</h5>
                 <p class="card-text">@article.Content.Substring(0, 200)...</p>
                 <button @onclick="(e) => { ViewArticle(article.Id); }" class="btn btn-primary">View</button>
-                <AuthorizeView>
+                <AuthorizeView Roles="admin, redactor">
                     <Authorized>
                         <button class="btn btn-dark" @onclick="(e) => { EditArticle(article.Id); }">Edit</button>
+                    </Authorized>
+                </AuthorizeView>
+                <AuthorizeView Roles="admin">
+                    <Authorized>
                         <button class="btn btn-danger" @onclick="(e) => { DeleteArticle(article.Id); }">Delete</button>
                     </Authorized>
                 </AuthorizeView>
-
-
             </div>
         </div>
     }

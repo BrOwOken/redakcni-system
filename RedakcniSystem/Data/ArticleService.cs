@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ namespace RedakcniSystem.Data
 {
     public class ArticleService
     {
-        public ApplicationDbContext DbContext { get; set; }
+        private ApplicationDbContext DbContext { get; set; }
         public ArticleService(ApplicationDbContext dbContext)
         {
             this.DbContext = dbContext;
