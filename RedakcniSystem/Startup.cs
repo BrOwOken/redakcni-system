@@ -41,8 +41,11 @@ namespace RedakcniSystem
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddHttpContextAccessor();
             services.AddScoped<ArticleService>();
             services.AddScoped<UsersService>();
+            services.AddScoped<MenuService>();
+            services.AddScoped<CustomSiteService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

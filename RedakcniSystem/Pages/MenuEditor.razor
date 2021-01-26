@@ -1,0 +1,68 @@
+﻿@page "/menuedit"
+@inject MenuService menuService
+@using RedakcniSystem.Data
+
+<AuthorizeView Roles="admin">
+    <Authorized>
+        <div style="max-width: 420px;">
+            <h3>MenuEditor</h3>
+
+            <ul class="list-group mt-3">
+                @foreach (var item in menuItems)
+                {
+                    <li class="list-group-item" style="text-align-last: justify;">
+                        @item.Name
+                        <button class="btn btn-danger btn-sm" @onclick="(e) => { DeleteMenuItem(item.Id); }">Delete</button>
+                    </li>
+                }
+            </ul>
+
+            <div class="mt-5">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input class="form-control" @bind="itemToCreate.Name" />
+                </div>
+                <div class="form-group">
+                    <label>Link</label>
+                    <input class="form-control" @bind="itemToCreate.Link" />
+                </div>
+                <button class="btn btn-primary" @onclick="(e) => { AddMenuItem(); }">Add item</button>
+            </div>
+        </div>
+        
+    </Authorized>
+    <NotAuthorized>
+        <h3>Only admin can access this page!</h3>
+    </NotAuthorized>
+</AuthorizeView>
+ 
+
+
+@code {
+    List<MenuItem> menuItems;
+    MenuItem itemToCreate = new MenuItem();
+    protected override void OnInitialized()
+    {
+        menuItems = menuService.GetMenu();
+    }
+    public EventCallback DeleteMenuItem(int id)
+    {
+        Console.WriteLine("btn clicked");
+        menuService.RemoveMenuItem(id);
+        menuItems = menuService.GetMenu();
+        this.StateHasChanged();
+        return new EventCallback();
+    }
+    public EventCallback AddMenuItem()
+    {
+        if(itemToCreate.Name != null || itemToCreate.Link != null)
+        {
+            menuService.AddMenuItem(itemToCreate);
+            menuItems = menuService.GetMenu();
+            itemToCreate = new MenuItem();
+            this.StateHasChanged();
+        }
+        return new EventCallback();
+
+    }
+}

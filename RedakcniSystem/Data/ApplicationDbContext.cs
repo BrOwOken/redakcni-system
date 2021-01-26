@@ -9,6 +9,8 @@ namespace RedakcniSystem.Data
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Article> Articles { get; set; }
+        public DbSet<MenuItem> ArticleMenuItems { get; set; }
+        public DbSet<CustomSite> CustomSites { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

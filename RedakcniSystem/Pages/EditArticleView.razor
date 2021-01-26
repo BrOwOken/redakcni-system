@@ -3,7 +3,7 @@
 @inject ArticleService articleService
 @inject NavigationManager nav
 
-<AuthorizeView>
+<AuthorizeView  Roles="admin, author">
     <Authorized>
         <h3>Edit article</h3>
 

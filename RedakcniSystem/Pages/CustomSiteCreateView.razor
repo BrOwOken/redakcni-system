@@ -1,0 +1,75 @@
+﻿@page "/customsitecreate" 
+@inject CustomSiteService customSiteService
+@inject UsersService usersService
+@inject NavigationManager nav
+ 
+@using RedakcniSystem.Data;  
+ 
+<h3>Create a custom site</h3>
+
+<div style="max-width: 690px;">
+    <div class="form-group">
+        <label>Site name</label>
+        <input class="form-control" @bind="site.Name"/>
+    </div>
+    <div class="form-group">
+        <label>Site title</label>
+        <input class="form-control" @bind="site.Title" />
+    </div>
+    <div class="form-group">
+        <label>Site code</label>
+        <textarea class="form-control" rows="12" @bind="site.Html" ></textarea>
+    </div>
+    <button class="btn btn-primary" @onclick="(e) => { AddSite(); }">Add a new site</button>
+</div>
+
+<h4 class="mt-4">My custom sites</h4>
+
+<div class="card-columns">
+    @foreach (var item in myCustomSites)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <button class="btn btn-primary" @onclick="(e) => { OpenSite(item.Id); }">Open</button>
+                <button class="btn btn-danger" @onclick="(e) => { DeleteSite(item.Id); }">Remove</button>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private CustomSite site;
+    private List<CustomSite> myCustomSites;
+    private string userId;
+    protected override void OnInitialized()
+    {
+        site = new CustomSite();
+        userId = usersService.GetCurrentUserId();
+        myCustomSites = customSiteService.UserGetSites(userId);
+    }
+    public void OpenSite(int id)
+    {
+        nav.NavigateTo($"/site/{id.ToString()}");
+    }
+    public EventCallback AddSite()
+    {
+        if (site.Name != null || site.Title != null)
+        {
+            site.UserId = userId;
+            customSiteService.AddSite(site);
+            myCustomSites = customSiteService.UserGetSites(userId);
+            this.StateHasChanged();
+        }
+
+        return new EventCallback();
+    }
+    public EventCallback DeleteSite(int id)
+    {
+        customSiteService.RemoveSite(id);
+        myCustomSites = customSiteService.UserGetSites(userId);
+        this.StateHasChanged();
+        return new EventCallback();
+    }
+
+}

@@ -15,12 +15,12 @@
                                 <NavLink class="nav-link" href="#">Articles</NavLink>
                             </div>
                             <div class="nav-item">
+                                <NavLink class="nav-link" href="customsitecreate">My sites</NavLink>
+                            </div>
+                            <div class="nav-item">
                                 <NavLink class="nav-link" href="Identity/Account/Manage">User</NavLink>
                             </div>
 
-                            <form method="post" class="nav-item" action="Identity/Account/LogOut">
-                                <button type="submit" class="btn btn-light" style="margin-left: 8px;">Log out</button>
-                            </form>
                         </Authorized>
                         <NotAuthorized>
                             <div class="nav-item">
@@ -43,9 +43,19 @@
                             <div class="nav-item">
                                 <NavLink class="nav-link" href="usermanager">User manager</NavLink>
                             </div>
+                            <div class="nav-item">
+                                <NavLink class="nav-link" href="menuedit">Menu editor</NavLink>
+                            </div>
                         </Authorized>
                     </AuthorizeView>
-                    
+                    <AuthorizeView>
+                        <Authorized>
+                            <form method="post" class="nav-item" action="Identity/Account/LogOut">
+                                <button type="submit" class="btn btn-light" style="margin-left: 8px;">Log out</button>
+                            </form>
+                        </Authorized>
+                    </AuthorizeView>
+
                 </div>
             </div>
             
