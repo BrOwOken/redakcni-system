@@ -22,7 +22,6 @@
 <div class="row">
     <div class="input-group mb-3 col-5">
         <InputFile type="file" class="form-control" id="inputGroupFile" OnChange="@OnInputFileChange" multiple></InputFile>
-        <label class="input-group-text" for="inputGroupFile">Upload</label>
     </div>
 </div>
 
@@ -33,13 +32,14 @@
 
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
-        var format = "image/png";
+        var files = e.GetMultipleFiles();
 
-        foreach (var imageFile in e.GetMultipleFiles())
+        foreach (var imageFile in files)
         {
-            using (FileStream fs = imageFile.OpenReadStream() as FileStream)
+            using (MemoryStream ms = new MemoryStream())
             {
-                galleryService.SaveImage(fs, this.Name);
+                imageFile.OpenReadStream().CopyTo(ms);
+                await galleryService.SaveImage(ms, this.Name);
             }
             
         }

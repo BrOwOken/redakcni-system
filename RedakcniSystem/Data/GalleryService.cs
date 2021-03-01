@@ -69,14 +69,10 @@ namespace RedakcniSystem.Data
             DirectoryInfo dir = new DirectoryInfo($@"{_environment.ContentRootPath}/wwwroot/Gallery");
             dir.CreateSubdirectory(name);
         }
-        public async Task SaveImage(FileStream image, string albumName)
+        public async Task SaveImage(MemoryStream image, string albumName)
         {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                image.CopyToAsync(ms);
-                var array = ms.ToArray();
-                File.WriteAllBytes($@"{_environment.ContentRootPath}/wwwroot/Gallery/{albumName}", array);
-            }
+            var array = image.ToArray();
+            await File.WriteAllBytesAsync($@"{_environment.ContentRootPath}/wwwroot/Gallery/{albumName}", array);
         }
     }
 }
