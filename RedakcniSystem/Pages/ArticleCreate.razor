@@ -1,9 +1,10 @@
 ﻿@page "/addarticle"
 @using RedakcniSystem.Data;
 @inject ArticleService articleService
-@inject NavigationManager nav 
+@inject NavigationManager nav
+@inject GalleryService galleryService
 
-<AuthorizeView>
+<AuthorizeView Roles="admin, redactor">
     <Authorized>
         <h3>New article</h3>
 
@@ -25,26 +26,37 @@
                 <input name="imageUrlInput" @bind="article.ImageUrl" class="form-control" />
             </div>
             <div class="form-group">
+                <label>Album</label>
+                <select class="form-select" @bind="article.AlbumName" aria-label="Default select example">
+                    <option selected>None</option>
+                    @foreach (var album in galleryService.GetAlbums())
+                    {
+                        <option value="@album.Name">@album.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
                 <label>Tags (divide them by comma)</label>
                 <input name="tagsInput" @bind="article.Tags" class="form-control" />
             </div>
-            <button class="btn btn-primary" @onclick="(e) => { CreateArticle(); }" data-toggle="modal" data-target="#exampleModal">Create</button>
+            <button class="btn btn-primary" @onclick="(e) => { CreateArticle(); }">Create</button>
         </div>
     </Authorized>
     <NotAuthorized>
-        <h3>Please <a href="Identity/Account/Login">login</a> to add new articles.</h3>
+        <p>Access denied</p>
     </NotAuthorized>
 </AuthorizeView>
 
 @code {
     Article article = new Article();
 
+
     public EventCallback CreateArticle()
     {
         if (article.Title != null && article.Content != null && article.Author != null)
         {
             articleService.AddArticle(article);
-            nav.NavigateTo("articles");
+            nav.NavigateTo("/");
         }
 
         return new EventCallback();

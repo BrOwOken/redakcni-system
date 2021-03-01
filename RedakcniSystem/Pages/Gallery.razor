@@ -1,0 +1,53 @@
+﻿@page "/gallery" 
+@inject GalleryService gallery
+@inject NavigationManager nav
+@using RedakcniSystem.Data;
+
+<h3>Gallery</h3>
+<div class="card-columns">
+    @foreach (var album in gallery.GetAlbums())
+    {
+    <div class="card">
+        <img src="@album.ImageUrl" class="card-img-top" alt="uwu" />
+        <div class="card-body">
+            <h5 class="card-title">@album.Name</h5>
+            <button class="btn btn-primary" @onclick="() => { NavigateToAlbum(album.Name); }">Open</button>
+            <AuthorizeView Roles="admin, redactor">
+                <Authorized>
+                    <button class="btn btn-secondary" @onclick="() => { NavigateToEditAlbum(album.Name); }">Edit</button>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </div>
+    }
+</div>
+<AuthorizeView Roles="admin, redactor">
+    <Authorized>
+        <h3>Create album</h3>
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" @bind="albumName" class="form-control" />
+        </div>
+        <button class="btn btn-primary" @onclick="() => { CreateAlbum(); }">Add</button>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private string albumName = string.Empty;
+    public EventCallback NavigateToAlbum(string name)
+    {
+        nav.NavigateTo($"album/{name}");
+        return new EventCallback();
+    }
+    public EventCallback NavigateToEditAlbum(string name)
+    {
+        nav.NavigateTo($"albumedit/{name}");
+        return new EventCallback();
+    }
+    public EventCallback CreateAlbum()
+    {
+        gallery.CreateAlbum(albumName);
+        this.StateHasChanged();
+        return new EventCallback();
+    }
+}

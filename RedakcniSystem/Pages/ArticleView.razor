@@ -1,6 +1,7 @@
 ﻿@page "/article/{id:int}"
 @using RedakcniSystem.Data;
 @inject ArticleService articleService
+@inject GalleryService galleryService
 
 <figure class="figure">
     <img src="@article.ImageUrl" class="figure-img img-fluid rounded">
@@ -20,6 +21,22 @@
 
 <p class="mt-3">@article.Content</p>
 
+@if (article.AlbumName != null)
+{
+    <div class="row">
+        <div class="col-6">
+            <img src="@currentImage" style="height: 600px !important; width: auto;" />
+        </div>
+    </div>
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group me-2 mt-2" role="group" aria-label="First group">
+            @foreach (var image in images)
+            {
+                <button type="button" class="btn btn-outline-secondary" @onclick="() => { GetImage(image); }">@(GetPositionOfImg(image))</button>
+            }
+        </div>
+    </div>
+}
 
 
 
@@ -27,9 +44,33 @@
     [Parameter]
     public int Id { get; set; }
     public Article article;
-
+    List<string> images = new List<string>();
+    public string currentImage = string.Empty;
     protected override void OnInitialized()
     {
         article = articleService.GetArticle(Id);
+        images = galleryService.GetImages(this.article.AlbumName);
+        if(images.Count != 0)
+            currentImage = images[0];
+
+    }
+    public int GetPositionOfImg(string img)
+    {
+        for (int i = 0; i < images.Count; i++)
+        {
+            if (images[i] == img)
+            {
+                return i;
+            }
+            else
+                continue;
+        }
+        return 0;
+    }
+    public EventCallback GetImage(string img)
+    {
+        currentImage = img;
+        this.StateHasChanged();
+        return new EventCallback();
     }
 }

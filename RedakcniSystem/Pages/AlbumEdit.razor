@@ -1,0 +1,54 @@
+﻿@page "/albumedit/{name}"
+@using RedakcniSystem.Data
+@using System.IO;
+@inject GalleryService galleryService
+ 
+<h3>Edit album "@Name"</h3>
+
+<div class="row">
+    <div class="card-columns col-9">
+        @foreach (var image in galleryService.GetImages(Name))
+        {
+            <div class="card">
+                <img class="card-img-top" src="@image" alt="Article image">
+                <div class="card-body">
+                    <button @onclick="(e) => { DeleteImage(image); }" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="input-group mb-3 col-5">
+        <InputFile type="file" class="form-control" id="inputGroupFile" OnChange="@OnInputFileChange" multiple></InputFile>
+        <label class="input-group-text" for="inputGroupFile">Upload</label>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public string Name { get; set; }
+
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        var format = "image/png";
+
+        foreach (var imageFile in e.GetMultipleFiles())
+        {
+            using (FileStream fs = imageFile.OpenReadStream() as FileStream)
+            {
+                galleryService.SaveImage(fs, this.Name);
+            }
+            
+        }
+    }
+    public EventCallback DeleteImage(string image)
+    {
+        var name=Path.GetFileName(image);
+        galleryService.DeleteImage(this.Name, name);
+        this.StateHasChanged();
+        return new EventCallback();
+    }
+}

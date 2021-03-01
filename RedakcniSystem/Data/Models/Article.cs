@@ -15,6 +15,7 @@ namespace RedakcniSystem.Data
         public string ImageUrl { get; set; }
         public string Author { get; set; }
         public string Tags { get; set; }
+        public string AlbumName { get; set; }
 
         public Article(string title, string author, string content, string imageUrl, string tags)
         {
