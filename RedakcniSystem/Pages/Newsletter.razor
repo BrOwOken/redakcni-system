@@ -1,0 +1,37 @@
+﻿@page "/newsletter" 
+@using RedakcniSystem.Data
+@inject NewsletterService newsletterService
+@inject UsersService usersService
+
+<AuthorizeView>
+    <Authorized>
+        @if (newsletterService.IsRegistered(usersService.GetCurrentUserEmail()))
+        {
+            <h3>You can cancel the newsletter anytime.</h3>
+            <button class="btn btn-danger" @onclick="() => { RemoveEmail(); }">Cancel</button>
+
+        }
+        else
+        {
+            <h3>Do you wish to register to our newsletter?</h3>
+            <button class="btn btn-primary" @onclick="() => { RegisterEmail(); }">Register</button>
+        }
+    </Authorized>
+</AuthorizeView>
+
+
+
+@code {
+    public EventCallback RegisterEmail()
+    {
+        newsletterService.SignupEmail(usersService.GetCurrentUserEmail());
+        this.StateHasChanged();
+        return new EventCallback();
+    }
+    public EventCallback RemoveEmail()
+    {
+        newsletterService.RemoveEmail(usersService.GetCurrentUserEmail());
+        this.StateHasChanged();
+        return new EventCallback();
+    }
+}

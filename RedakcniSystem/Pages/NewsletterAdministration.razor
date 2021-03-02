@@ -1,0 +1,52 @@
+﻿@page "/newsletteradmin"
+@using RedakcniSystem.Data
+
+@inject NewsletterService newsletterService 
+
+<AuthorizeView Roles="admin, redactor">
+    <Authorized>
+        <h3>Newsletter Administration</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var email in newsletterService.GetEmails())
+                {
+                    <tr>
+                        <td>@email.Email</td>
+                        <td><button class="btn-sm btn btn-danger" @onclick="() => { RemoveEmail(email.Email); }">Remove</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="form-group">
+            <label>Add email to newsletter</label>
+            <input type="text" class="form-control" @bind="email" />
+        </div>
+        <button class="btn btn-primary" @onclick="() => { AddEmail(); }">Add email</button>
+    </Authorized>
+    <NotAuthorized>
+        <p>Access denied</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private string email;
+    public EventCallback AddEmail()
+    {
+        newsletterService.SignupEmail(email);
+        this.StateHasChanged();
+        email = "";
+        return new EventCallback();
+    }
+    public EventCallback RemoveEmail(string e)
+    {
+        newsletterService.RemoveEmail(e);
+        this.StateHasChanged();
+        return new EventCallback();
+    }
+}

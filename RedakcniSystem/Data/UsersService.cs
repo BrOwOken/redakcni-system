@@ -34,5 +34,10 @@ namespace RedakcniSystem.Data
             var id = userManager.GetUserId(httpContextAccessor.HttpContext.User);
             return id;
         }
+        public string GetCurrentUserEmail()
+        {
+            var email = userManager.GetUserName(httpContextAccessor.HttpContext.User);
+            return email;
+        }
     }
 }

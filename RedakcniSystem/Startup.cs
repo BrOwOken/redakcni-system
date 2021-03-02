@@ -47,6 +47,7 @@ namespace RedakcniSystem
             services.AddScoped<MenuService>();
             services.AddScoped<CustomSiteService>();
             services.AddScoped<GalleryService>();
+            services.AddScoped<NewsletterService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
