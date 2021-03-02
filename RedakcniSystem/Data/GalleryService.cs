@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using RedakcniSystem.Data.Models;
 using System.IO;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace RedakcniSystem.Data
 {
@@ -69,10 +70,18 @@ namespace RedakcniSystem.Data
             DirectoryInfo dir = new DirectoryInfo($@"{_environment.ContentRootPath}/wwwroot/Gallery");
             dir.CreateSubdirectory(name);
         }
-        public async Task SaveImage(MemoryStream image, string albumName)
+        public async Task SaveImage(IBrowserFile[] images, string albumName)
         {
-            var array = image.ToArray();
-            await File.WriteAllBytesAsync($@"{_environment.ContentRootPath}/wwwroot/Gallery/{albumName}", array);
+
+            foreach (var imageFile in images)
+            {
+                var file = await imageFile.RequestImageFileAsync("image/png", 1000,1000);
+                var buffer = new byte[file.Size];
+                await file.OpenReadStream(40000000).ReadAsync(buffer);
+                
+                await File.WriteAllBytesAsync($@"{_environment.ContentRootPath}/wwwroot/Gallery/{albumName}", buffer);
+            }
+      
         }
     }
 }

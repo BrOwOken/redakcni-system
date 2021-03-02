@@ -32,17 +32,7 @@
 
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
-        var files = e.GetMultipleFiles();
-
-        foreach (var imageFile in files)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                imageFile.OpenReadStream().CopyTo(ms);
-                await galleryService.SaveImage(ms, this.Name);
-            }
-            
-        }
+        await galleryService.SaveImage(e.GetMultipleFiles().ToArray(), Name);
     }
     public EventCallback DeleteImage(string image)
     {
