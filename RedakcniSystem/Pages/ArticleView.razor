@@ -21,6 +21,15 @@
 
 <p class="mt-3">@article.Content</p>
 
+@if (!articleService.IsFavourited(article.Id))
+{
+    <button type="button" class="btn btn-primary" @onclick="() => { AddToFavorites(); }">Add to favorites</button>
+}
+else
+{
+    <button type="button" class="btn btn-danger" @onclick="() => { RemoveFromFavorites(); }">Remove from favorites</button>
+}
+
 @if (article.AlbumName != null)
 {
     <div class="row">
@@ -50,7 +59,7 @@
     {
         article = articleService.GetArticle(Id);
         images = galleryService.GetImages(this.article.AlbumName);
-        if(images.Count != 0)
+        if (images.Count != 0)
             currentImage = images[0];
 
     }
@@ -66,6 +75,18 @@
                 continue;
         }
         return 0;
+    }
+    public EventCallback AddToFavorites()
+    {
+        articleService.AddFavoriteArticle(article.Id);
+        this.StateHasChanged();
+        return new EventCallback();
+    }
+    public EventCallback RemoveFromFavorites()
+    {
+        articleService.RemoveFavouriteArticle(article.Id);
+        this.StateHasChanged();
+        return new EventCallback();
     }
     public EventCallback GetImage(string img)
     {

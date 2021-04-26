@@ -39,5 +39,9 @@ namespace RedakcniSystem.Data
             var email = userManager.GetUserName(httpContextAccessor.HttpContext.User);
             return email;
         }
+        public IdentityUser GetCurrentUser()
+        {
+            return userManager.GetUserAsync(httpContextAccessor.HttpContext.User).Result;
+        }
     }
 }

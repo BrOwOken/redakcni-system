@@ -1,0 +1,56 @@
+﻿@page "/favorites"
+@using RedakcniSystem.Data;
+@using RedakcniSystem.Data.Models;
+@inject ArticleService articleService
+@inject NavigationManager nav
+
+<AuthorizeView>
+    <Authorized>
+        @if(favorites.Count > 0)
+        {
+        <div class="row">
+            <div class="card-columns col-9">
+                @foreach (var fav in favorites)
+                {
+                    var article = articleService.GetArticle(fav.ArticleId);
+                    <div class="card">
+                        <img class="card-img-top" src="@article.ImageUrl" alt="Article image">
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">@article.Title</h5>
+                            <button @onclick="(e) => { ViewArticle(fav.Id); }" class="btn btn-primary">View</button>
+                            <button @onclick="(e) => { RemoveFavorite(fav.Id); }" class="btn btn-danger">Remove</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        }
+        else
+        {
+            <h3>No favorite articles found</h3>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>Please login to view this page.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    List<Favorites> favorites = new List<Favorites>();
+    protected override void OnInitialized()
+    {
+        favorites = articleService.GetFavourites();
+    }
+    private EventCallback RemoveFavorite(int favoriteId)
+    {
+        articleService.RemoveFavouriteArticle(favoriteId);
+        this.StateHasChanged();
+        return new EventCallback();
+    }
+    private EventCallback ViewArticle(int id)
+    {
+        nav.NavigateTo($"article/{id}");
+        return new EventCallback();
+    }
+}
