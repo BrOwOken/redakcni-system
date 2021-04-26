@@ -1,8 +1,10 @@
 ﻿@page "/addarticle"
 @using RedakcniSystem.Data;
+@using RedakcniSystem.Controllers;
 @inject ArticleService articleService
 @inject NavigationManager nav
 @inject GalleryService galleryService
+@inject MailController mailController 
 
 <AuthorizeView Roles="admin, redactor">
     <Authorized>
@@ -56,6 +58,7 @@
         if (article.Title != null && article.Content != null && article.Author != null)
         {
             articleService.AddArticle(article);
+            mailController.Email(article);
             nav.NavigateTo("/");
         }
 

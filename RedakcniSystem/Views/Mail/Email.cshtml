@@ -1,26 +1,69 @@
 ﻿@model RedakcniSystem.Data.Models.MailModel
+<!DOCTYPE html>
 <html>
 <head>
-    <title>UwU</title>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>@Model.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style type="text/css">
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+        }
+
+        .preheader {
+            color: transparent;
+            display: none;
+            height: 0;
+            max-height: 0;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            mso-hide: all;
+            visibility: hidden;
+            width: 0;
+        }
+
+        .main {
+        }
+    </style>
+
 </head>
 <body style="margin: 0; padding: 0;">
-    <table role="presentation" border="0" cellpadding="0" width="100%" >
+    <span class="preheader">@Model.Title</span>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
-            <td style="padding: 20px 0 30px;">
-                <table align="center" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; border: 1px solid #808080;">
+            <td style="padding: 20px 0 30px 0;">
+
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; border: 1px solid #cccccc;">
                     <tr>
-                        <td style="color: #333333; font-family: Arial, sans-serif;">
-                            <h1 style="font-size: 24px; margin: 0;">@Model.Title</h1>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="color: #333333; font-family: Arial, sans-serif; font-size: 16px; line-height: 24px; padding: 30px 0 20px 0">
-                            <p style="margin: 0;">@Model.Text</p>
+                        <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                                <tr>
+                                    <td style="color: #153643; font-family: Arial, sans-serif;">
+                                        <h1 style="font-size: 24px; margin:0">@Model.Title</h1>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: Arial, sans-serif;">
+                                        <img />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 24px; padding: 20px 0 30px 0;">
+                                        <p style="margin: 0;">@Html.Raw(Model.Text)</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 24px; padding: 20px 0 30px 0;">
+                                        <p style="margin: 0;">Email byl zaslán na @Model.Email</p>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                 </table>
+
             </td>
         </tr>
     </table>

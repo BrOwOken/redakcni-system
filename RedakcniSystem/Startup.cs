@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RedakcniSystem.Areas.Identity;
 using RedakcniSystem.Data;
+using RedakcniSystem.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,7 @@ namespace RedakcniSystem
             services.AddScoped<MenuService>();
             services.AddScoped<CustomSiteService>();
             services.AddScoped<GalleryService>();
+            services.AddScoped<MailController>();
             services.AddScoped<NewsletterService>();
             services.AddMvc();
         }

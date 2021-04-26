@@ -1,7 +1,9 @@
 ﻿@page "/newsletteradmin"
 @using RedakcniSystem.Data
+@using RedakcniSystem.Controllers;
 
 @inject NewsletterService newsletterService 
+@inject MailController emailController 
 
 <AuthorizeView Roles="admin, redactor">
     <Authorized>
